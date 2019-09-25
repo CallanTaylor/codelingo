@@ -1,0 +1,11 @@
+tenets:
+  - name: find-funcs
+    actions:
+      codelingo/review:
+        comment: This is a function, but you probably already knew that.
+    query: |
+      import codelingo/ast/go
+
+      @review comment
+      go.ident:
+        type == "*os.File"
