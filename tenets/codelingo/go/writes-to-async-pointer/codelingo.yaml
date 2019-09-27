@@ -1,5 +1,5 @@
 tenets:
-  - name: async-pointer
+  - name: writes-to-async-pointer
     actions:
       codelingo/review:
         comment: Writing to a reference passed to an asynchronous function can lead to unexpected behaviour.

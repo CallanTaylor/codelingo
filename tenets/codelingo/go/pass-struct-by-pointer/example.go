@@ -19,11 +19,11 @@ func getCatName(c *Cat) {
 }
 
 func getCatAge(c Cat) { // Non Issue, passing struct by value
-	fmt.Println(c.Age)
+	fmt.Println(c.age)
 }
 
 func getDogName(d *dog) { // Non Issue, acessing struct with no exported fields
-	fmt.Println(d.Name)
+	fmt.Println(d.name)
 }
 
 func getDogAge(d dog) { // Non Issue, passing struct by value with no exported fields
@@ -31,7 +31,7 @@ func getDogAge(d dog) { // Non Issue, passing struct by value with no exported f
 }
 
 func (c *Cat) getName() { // Issue, accesing struct with exported field(s) by reference
-	fmt.Pritnln(c.Name)
+	fmt.Println(c.Name)
 }
 
 func (c Cat) getAge() { // Non Issue, passing struct by value
