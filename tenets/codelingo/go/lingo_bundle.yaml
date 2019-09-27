@@ -26,6 +26,7 @@ tenets:
 - ignore-goroutine-return-values
 - ignore-defered-returns
 - pass-struct-by-pointer
+- writes-to-async-pointer
 tags:
 - golang
 - go

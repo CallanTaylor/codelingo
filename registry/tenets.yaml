@@ -155,6 +155,8 @@ codelingo:
         hasIssues: false
       pass-struct-by-pointer:
         hasIssues: false
+      writes-to-async-pointer:
+        hasIssues: false
     tags:
     - golang
     - go
