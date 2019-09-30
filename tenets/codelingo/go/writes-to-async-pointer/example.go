@@ -8,55 +8,62 @@ type thing struct {
 	name string
 }
 
-func getNameFromPointer(t *thing) {
+func readVulnerableField(t *thing) {
 	fmt.Println(t.name)
 }
 
-func getName(t thing) {
+func getSafeField(t thing) {
 	fmt.Println(t.name)
 }
 
-func setNameOnPointer(t *thing) {
+func writeVulnerableField(t *thing) {
 	t.name = "car"
 }
 
-func newThingPointer(name string) *thing {
-	return &thing{name}
-}
+// Here we perform some reads and writes to the data field of a pointer to
+// a 'thing'. The Tenet should only catch attempts to write to the fields of
+// a pointer that happen on seperate threads to the calling context.
+func readAndWriteToPointer() {
 
-func newThing(name string) thing {
-	return thing{name}
-}
+	t := &thing{"Pointer"}
 
-func main() {
+	readVulnerableField(t)
 
-	t := newThingPointer("Pointer")
+	go readVulnerableField(t)
 
-	getNameFromPointer(t)
-
-	go getNameFromPointer(t)
-
-	go setNameOnPointer(t)
-
-	t2 := newThing("Thing")
-
-	getName(t2)
-
-	go getName(t2)
+	go writeVulnerableField(t) // Issue
 
 	go func(t *thing) {
 		fmt.Println(t.name)
 	}(t)
+
+	go func(t *thing) { // Issue
+		t.name = "car"
+	}(t)
+
+}
+
+// Here we perfor read and write opertations to a field of a 'thing', however
+// here we are passing the 'thing' itself to the read and write methods which
+// is safe to do concurrently to other operations on the calling context.
+func readAndWriteToObject() {
+
+	t2 := thing{"Not-pointer"}
+
+	getSafeField(t2)
+
+	go getSafeField(t2)
 
 	go func(t thing) {
 		fmt.Println(t.name)
 	}(t2)
-
-	go func(t *thing) {
-		t.name = "car"
-	}(t)
 
 	go func(t thing) {
 		t.name = "bus"
 	}(t2)
+}
+
+func main() {
+	readAndWriteToPointer()
+	readAndWriteToObject()
 }
